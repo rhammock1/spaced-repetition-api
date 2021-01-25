@@ -1,6 +1,17 @@
 {
   "name": "express-boilerplate",
   "version": "0.0.1",
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "es2021": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 12,
+      "sourceType": "module"
+    }
+  },
   "description": "",
   "main": "src/server.js",
   "scripts": {
