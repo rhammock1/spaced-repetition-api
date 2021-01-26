@@ -41,9 +41,17 @@ const mergeSort = function(arr) {
 //  a new list each time the client makes a request to get all words.
 const newList = function(arr) {
   const words = new List();
-  const sorted = mergeSort(arr);
-  sorted.forEach((word) => words.insertLast(word));
-  return words;
+  let length = arr.length;
+  let filter = arr.filter((each) => each.incorrect_count === 0)
+  if (filter.length === length) {
+    arr.forEach((word) => words.insertLast(word));
+    return words;
+  } else {
+    const sorted = mergeSort(arr);
+    sorted.forEach((word) => words.insertLast(word));
+    return words;
+  }
+  
 }
 
 const addToIncorrect = function(List, value) {

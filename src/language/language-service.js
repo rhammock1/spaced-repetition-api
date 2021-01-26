@@ -22,6 +22,7 @@ const LanguageService = {
         'id',
         'language_id',
         'original',
+        'next',
         'translation',
         'memory_value',
         'correct_count',

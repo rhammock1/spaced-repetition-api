@@ -62,15 +62,26 @@ languageRouter
   .get('/head', async (req, res, next) => {
     // my guess is that this head endpoint will be the one responsible for getting me the first card every time. Getting the "head" of the linked list
     try {
-      const head = req.head.value;
+      const words = req.words.display();
+      const first = req.head;
 
-      if (!head) {
+      if (!first) {
         return res.status(404).json({
           error: 'No item on top',
         })
       }
+      let total = 0;
+      console.log('Line 74', first);
+      words.map((word) => total += word.correct_count);
+      const head = {
+        nextWord:first.value.original,
+        totalScore:total,
+        wordCorrectCount:first.value.correct_count,
+        wordIncorrectCount:first.value.incorrect_count,
+      };
+
       return res.status(200).json({
-        head: head,
+        ...head,
       })
     } catch (error) {
       next(error);
