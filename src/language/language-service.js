@@ -32,7 +32,7 @@ const LanguageService = {
       .where({ language_id })
       .then((lang) => {
        const words = ListService.newList(lang);
-       return words.display();
+       return words;
       })
   },
 }

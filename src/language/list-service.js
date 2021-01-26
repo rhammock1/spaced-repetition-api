@@ -56,9 +56,5 @@ const addToCorrect = function(List, value) {
   node.value.correct_count++;
 }
 
-const getHead = function(List) {
-  return List.head;
-}
-
-module.exports = { newList, addToCorrect, addToIncorrect, getHead};
+module.exports = { newList, addToCorrect, addToIncorrect};
 

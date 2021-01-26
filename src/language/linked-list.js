@@ -29,6 +29,26 @@ class DoublyLinkedList {
     }
   }
 
+  insertMiddle(value) {
+    const node = new _Node(value);
+    if (this.head === null) {
+      this.insertFirst(value);
+    } else {
+      let middle = Math.floor(this.length / 2);
+      let tempNode = this.head;
+      while (middle >= 0 && tempNode.prev !== null) {
+        tempNode = tempNode.prev;
+        middle--;
+      }
+      node.prev = tempNode.prev;
+      tempNode.prev.next = node;
+      node.next = tempNode;
+      tempNode.prev = node;
+      this.length++;
+      return node;
+    }
+  }
+
   insertLast(value) {
     if (this.head === null) {
       this.insertFirst(value);
@@ -95,6 +115,6 @@ class DoublyLinkedList {
 // const q = new DoublyLinkedList();
 // const l = [1,2,3,4,5,6,7];
 // l.forEach((num) => q.insertLast(num));
-// console.log(q);
+// console.log(q.insertMiddle(13));
 
 module.exports = DoublyLinkedList;
