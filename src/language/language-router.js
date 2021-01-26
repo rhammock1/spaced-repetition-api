@@ -87,31 +87,30 @@ languageRouter
 
     try {
       const { guess } = req.body;
-    const words = req.words;
-    const head = req.head.value;
-    const db = req.app.get('db');
-    const languageId = req.language.id;
-    let updatedNode;
-    let updatedField;
-    let message;
+      const words = req.words;
+      const head = req.head.value;
+      const db = req.app.get('db');
+      let updatedNode;
+      let updatedField;
+      let message;
 
-    if (!guess) {
-      return res.status(400).json({ error: 'Must include user guess in request body'});
-    }
-    if (guess.toLowerCase() === head.translation.toLowerCase()) {
-      updatedNode = await ListService.addToCorrect(words, head);
-      updatedField = { correct_count: updatedNode.value.correct_count };
-      message = 'You got the right answer';
-      
-    } else {
-      updatedNode = await ListService.addToIncorrect(words, head);
-      updatedField = { incorrect_count: updatedNode.value.incorrect_count };
-      message = 'You did not get the right answer';
+      if (!guess) {
+        return res.status(400).json({ error: 'Must include user guess in request body'});
+      }
+      if (guess.toLowerCase() === head.translation.toLowerCase()) {
+        updatedNode = await ListService.addToCorrect(words, head);
+        updatedField = { correct_count: updatedNode.value.correct_count };
+        message = 'You got the right answer';
+        
+      } else {
+        updatedNode = await ListService.addToIncorrect(words, head);
+        updatedField = { incorrect_count: updatedNode.value.incorrect_count };
+        message = 'You did not get the right answer';
 
-    }
-    await LanguageService.updateCountOnWord(db, head.id, updatedField)
-        .then(() => res.status(201).json({ message }))
-        .catch((error) => next(error));
+      }
+      await LanguageService.updateCountOnWord(db, head.id, updatedField)
+          .then(() => res.status(201).json({ message }))
+          .catch((error) => next(error));
     } catch (error) {
       next(error);
     }
