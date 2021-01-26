@@ -49,11 +49,13 @@ const newList = function(arr) {
 const addToIncorrect = function(List, value) {
   const node = List.find(value);
   node.value.incorrect_count++;
+  return node;
 }
 
 const addToCorrect = function(List, value) {
   const node = List.find(value);
   node.value.correct_count++;
+  return node;
 }
 
 module.exports = { newList, addToCorrect, addToIncorrect};
