@@ -1,5 +1,6 @@
 const express = require('express')
 const LanguageService = require('./language-service')
+const ListService = require('./list-service');
 const { requireAuth } = require('../middleware/jwt-auth')
 
 const languageRouter = express.Router()
@@ -46,7 +47,7 @@ languageRouter
 languageRouter
   .get('/head', async (req, res, next) => {
     // my guess is that this head endpoint will be the one responsible for getting me the first card every time. Getting the "head" of the linked list
-
+    const head = ListService.getHead()
     
   })
 

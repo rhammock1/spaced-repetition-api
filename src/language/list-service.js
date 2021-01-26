@@ -36,6 +36,16 @@ const mergeSort = function(arr) {
 
 }
 
+// This function creates a new list and sorts it by incorrect count
+// It will be called in the language services file and used to create
+//  a new list each time the client makes a request to get all words.
+const newList = function(arr) {
+  const words = new List();
+  const sorted = mergeSort(arr);
+  sorted.forEach((word) => words.insertLast(word));
+  return words;
+}
+
 const addToIncorrect = function(List, value) {
   const node = List.find(value);
   node.value.incorrect_count++;
@@ -50,11 +60,5 @@ const getHead = function(List) {
   return List.head;
 }
 
-const words = new List();
-        
-const sorted = mergeSort(lang);
-sorted.forEach((word) => words.insertLast(word));
-
-
-module.exports = { addToCorrect, addToIncorrect, getHead};
+module.exports = { newList, addToCorrect, addToIncorrect, getHead};
 

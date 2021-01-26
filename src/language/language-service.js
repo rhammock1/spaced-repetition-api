@@ -1,3 +1,5 @@
+const ListService = require('./list-service');
+
 const LanguageService = {
   getUsersLanguage(db, user_id) {
     return db
@@ -28,6 +30,10 @@ const LanguageService = {
         'incorrect_count',
       )
       .where({ language_id })
+      .then((lang) => {
+       const words = ListService.newList(lang);
+       return words.display();
+      })
   },
 }
 
