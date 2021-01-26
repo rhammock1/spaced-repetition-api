@@ -13,6 +13,8 @@ const LanguageService = {
       .first()
   },
 
+
+
   getLanguageWords(db, language_id) {
     return db
       .from('word')
@@ -21,7 +23,6 @@ const LanguageService = {
         'language_id',
         'original',
         'translation',
-        'next',
         'memory_value',
         'correct_count',
         'incorrect_count',
