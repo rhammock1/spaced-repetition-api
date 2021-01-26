@@ -45,13 +45,14 @@ languageRouter
 
 languageRouter
   .get('/head', async (req, res, next) => {
-    // implement me
-    res.send('implement me!')
+    // my guess is that this head endpoint will be the one responsible for getting me the first card every time. Getting the "head" of the linked list
+
+    
   })
 
 languageRouter
   .post('/guess', async (req, res, next) => {
-    // implement me
+    // This will take a users guess from the request body and decide whether it matches the head of the linked list or not. Then send an appropriate response 
     res.send('implement me!')
   })
 
