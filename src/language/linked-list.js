@@ -41,6 +41,7 @@ class DoublyLinkedList {
         middle--;
       }
       node.prev = tempNode.prev;
+      console.log('line 44', tempNode.prev);
       tempNode.prev.next = node;
       node.next = tempNode;
       tempNode.prev = node;
@@ -70,7 +71,7 @@ class DoublyLinkedList {
     let headNode = this.head;
     let tailNode = this.tail;
     let foundNode;
-    while (headNode !== tailNode.next) {
+    while (headNode !== tailNode.next && tailNode.next !== null) {
       if(headNode.value === value) {
         foundNode = headNode;
       } else if (tailNode.value === value) {

@@ -19,7 +19,6 @@ const LanguageService = {
   },
 
   getHead() {
-    console.log(words);
     return words.head;
   },
 
@@ -27,7 +26,7 @@ const LanguageService = {
     return ListService.addToCorrect(words, value);
   },
   addToIncorrect(value) {
-    console.log(words);
+    console.log('line 30', words);
     return ListService.addToIncorrect(words, value);
   },
 

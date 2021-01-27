@@ -92,26 +92,35 @@ languageRouter
       const db = req.app.get('db');
       let updatedNode;
       let updatedField;
-      let message;
+      let isCorrect;
 
       if (!guess) {
-        return res.status(400).json({ error: 'Must include user guess in request body'});
+        return res.status(400).json({ error: `Missing 'guess' in request body`});
       }
       // Decides if they got the right answer or not and prepares the response
       if (guess.toLowerCase() === head.value.translation.toLowerCase()) {
         updatedNode = await LanguageService.addToCorrect(head.value);
         updatedField = { correct_count: updatedNode.value.correct_count };
-        message = 'You got the right answer';
+        isCorrect = true;
         
       } else {
         updatedNode = await LanguageService.addToIncorrect(head.value);
         updatedField = { incorrect_count: updatedNode.value.incorrect_count };
-        message = 'You did not get the right answer';
-
+        isCorrect = false;
       }
+      const totalScore = LanguageService.getTotalScore();
       // Takes the updated fields and inputs it into the db then sends the response
       await LanguageService.updateCountOnWord(db, head.value.id, updatedField)
-          .then(() => res.status(201).json({ message }))
+          .then(() => LanguageService.getHead())
+          .then((nextWord) => (
+            res.status(200).json({ 
+              nextWord: nextWord.value.original,
+              totalScore: totalScore,
+              wordCorrectCount:nextWord.value.correct_count,
+              wordIncorrectCount: nextWord.value.incorrect_count,
+              answer: head.value.translation,
+              isCorrect, 
+          })))
           .catch((error) => next(error));
     } catch (error) {
       next(error);

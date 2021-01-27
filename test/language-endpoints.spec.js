@@ -1,3 +1,4 @@
+const supertest = require('supertest')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
@@ -156,7 +157,7 @@ describe.only('Language Endpoints', function () {
       )
     })
 
-    it.skip(`responds with 400 required error when 'guess' is missing`, () => {
+    it(`responds with 400 required error when 'guess' is missing`, () => {
       const postBody = {
         randomField: 'test random field',
       }
@@ -175,20 +176,26 @@ describe.only('Language Endpoints', function () {
         guess: 'incorrect',
       }
 
-      it.skip(`responds with incorrect and moves head`, () => {
+      it(`responds with incorrect and moves head`, () => {
         return supertest(app)
-          .post(`/api/language/guess`)
-          .set('Authorization', helpers.makeAuthHeader(testUser))
-          .send(incorrectPostBody)
-          .expect(200)
-          .expect({
-            nextWord: testLanguagesWords[1].original,
-            totalScore: 0,
-            wordCorrectCount: 0,
-            wordIncorrectCount: 0,
-            answer: testLanguagesWords[0].translation,
-            isCorrect: false
-          })
+        .get('/api/language')
+        .set('Authorization', helpers.makeAuthHeader(testUser))
+        .then(()=> {
+          return supertest(app)
+            .post(`/api/language/guess`)
+            .set('Authorization', helpers.makeAuthHeader(testUser))
+            .send(incorrectPostBody)
+            .expect(200)
+            .expect({
+              nextWord: testLanguagesWords[1].original,
+              totalScore: 0,
+              wordCorrectCount: 0,
+              wordIncorrectCount: 0,
+              answer: testLanguagesWords[0].translation,
+              isCorrect: false
+            })
+        
+        })
       })
 
       it.skip(`moves the word 1 space and updates incorrect count`, async () => {
