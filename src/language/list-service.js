@@ -56,7 +56,7 @@ const addToIncorrect = function(List, value) {
   const node = List.find(value);
   node.value.incorrect_count++;
   List.remove(node.value);
-  List.insertMiddle(node.value);
+  List.insertTwoAfterHead(node.value);
   return node;
 }
 

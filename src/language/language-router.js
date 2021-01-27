@@ -87,6 +87,7 @@ languageRouter
     try {
       const { guess } = req.body;
       const head = LanguageService.getHead();
+      
       const db = req.app.get('db');
       let updatedNode;
       let updatedField;
@@ -109,6 +110,7 @@ languageRouter
       const totalScore = LanguageService.getTotalScore();
       // Takes the updated fields and inputs it into the db then sends the response
       await LanguageService.updateCountOnWord(db, head.value.id, updatedField)
+          .then(() => console.log(head.value))
           .then(() => LanguageService.getHead())
           .then((nextWord) => (
             res.status(200).json({ 
