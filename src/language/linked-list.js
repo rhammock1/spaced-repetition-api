@@ -38,13 +38,13 @@ class DoublyLinkedList {
       let tempNode = this.head;
       while (middle >= 0 && tempNode.prev !== null) {
         tempNode = tempNode.prev;
+        
         middle--;
       }
-      node.prev = tempNode.prev;
-      console.log('line 44', tempNode.prev);
-      tempNode.prev.next = node;
-      node.next = tempNode;
-      tempNode.prev = node;
+      node.prev = tempNode;
+      node.next = tempNode.next;
+      tempNode.next.prev = node;
+
       this.length++;
       return node;
     }
@@ -71,14 +71,19 @@ class DoublyLinkedList {
     let headNode = this.head;
     let tailNode = this.tail;
     let foundNode;
-    while (headNode !== tailNode.next && tailNode.next !== null) {
+    while (headNode !== tailNode.next) {
       if(headNode.value === value) {
         foundNode = headNode;
       } else if (tailNode.value === value) {
         foundNode = tailNode;
       }
-      headNode = headNode.prev;
-      tailNode = tailNode.next;
+      if (headNode.prev === null || tailNode.next === null) {
+        break;
+      } else {
+        headNode = headNode.prev;
+        tailNode = tailNode.next;
+      }
+      
     }
     return foundNode;
   }

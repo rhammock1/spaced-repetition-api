@@ -26,7 +26,6 @@ const LanguageService = {
     return ListService.addToCorrect(words, value);
   },
   addToIncorrect(value) {
-    console.log('line 30', words);
     return ListService.addToIncorrect(words, value);
   },
 
@@ -52,7 +51,11 @@ const LanguageService = {
       )
       .where({ language_id })
       .then((lang) => {
-        return ListService.sort(lang, words)
+        if (words.head === null) {
+          return ListService.sort(lang, words);
+        } else {
+          return words;
+        }
       })
       
   },
@@ -64,15 +67,6 @@ const LanguageService = {
       .update(newField)
   }
 
-  // postUpdatedList(db, updatedList, language_id) {
-  //   const list = updatedList.display();
-  //   const allItems = list.map((item) => item);
-  //   console.log(allItems);
-  //   return db
-  //     .insert(allItems)
-  //     .into('word')
-  //     .then(() => this.getLanguageWords(db, language_id))
-  // }
 }
 
 module.exports = LanguageService

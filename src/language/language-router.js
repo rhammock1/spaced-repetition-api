@@ -60,7 +60,6 @@ languageRouter
         })
       }
       
-      console.log('Line 74', first);
       const total = LanguageService.getTotalScore();
       const head = {
         nextWord:first.value.original,
@@ -88,7 +87,6 @@ languageRouter
     try {
       const { guess } = req.body;
       const head = LanguageService.getHead();
-      console.log('line 91', head);
       const db = req.app.get('db');
       let updatedNode;
       let updatedField;

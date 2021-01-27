@@ -55,8 +55,8 @@ const sort = function(arr, List) {
 const addToIncorrect = function(List, value) {
   const node = List.find(value);
   node.value.incorrect_count++;
-  List.remove(value);
-  List.insertMiddle(value);
+  List.remove(node.value);
+  List.insertMiddle(node.value);
   return node;
 }
 
