@@ -52,6 +52,7 @@ const LanguageService = {
       .where({ language_id })
       .then((lang) => {
         if (words.head === null) {
+          console.log('blank list');
           return ListService.sort(lang, words);
         } else {
           return words;

@@ -103,14 +103,15 @@ languageRouter
         isCorrect = true;
         
       } else {
+        
         updatedNode = await LanguageService.addToIncorrect(head.value);
         updatedField = { incorrect_count: updatedNode.value.incorrect_count };
         isCorrect = false;
+        
       }
       const totalScore = LanguageService.getTotalScore();
       // Takes the updated fields and inputs it into the db then sends the response
       await LanguageService.updateCountOnWord(db, head.value.id, updatedField)
-          .then(() => console.log(head.value))
           .then(() => LanguageService.getHead())
           .then((nextWord) => (
             res.status(200).json({ 

@@ -156,6 +156,7 @@ describe.only('Language Endpoints', function () {
         testWords,
       )
     })
+    afterEach('cleanup', () => helpers.cleanTables(db))
 
     it(`responds with 400 required error when 'guess' is missing`, () => {
       const postBody = {
@@ -223,34 +224,45 @@ describe.only('Language Endpoints', function () {
       const testLanguagesWords = testWords.filter(
         word => word.language_id === testLanguage.id
       )
+      console.log(testLanguagesWords);
 
-      it.skip(`responds with correct and moves head`, () => {
+      it(`responds with correct and moves head`, () => {
         const correctPostBody = {
           guess: testLanguagesWords[0].translation,
         }
         return supertest(app)
-          .post(`/api/language/guess`)
+          .get('/api/language')
           .set('Authorization', helpers.makeAuthHeader(testUser))
-          .send(correctPostBody)
-          .expect(200)
-          .expect({
-            nextWord: testLanguagesWords[1].original,
-            totalScore: 1,
-            wordCorrectCount: 0,
-            wordIncorrectCount: 0,
-            answer: testLanguagesWords[0].translation,
-            isCorrect: true
+          .then(() => {
+            return supertest(app)
+              .post(`/api/language/guess`)
+              .set('Authorization', helpers.makeAuthHeader(testUser))
+              .send(correctPostBody)
+              .expect(200)
+              .expect((res) => {
+                expect(res.body).to.have.property('nextWord', testLanguagesWords[1].original)
+                expect(res.body).to.have.property('totalScore')
+                expect(res.body).to.have.property('wordCorrectCount')
+                expect(res.body).to.have.property('wordIncorrectCount')
+                expect(res.body).to.have.property('answer', testLanguagesWords[0].translation)
+                expect(res.body).to.have.property('isCorrect')
+              })
           })
       })
 
-      it.skip(`moves the word 2 spaces, increases score and correct count`, async () => {
+      it.only(`moves the word 2 spaces, increases score and correct count`, async () => {
         let correctPostBody = {
           guess: testLanguagesWords[0].translation,
         }
         await supertest(app)
-          .post(`/api/language/guess`)
+          .get('/api/language')
           .set('Authorization', helpers.makeAuthHeader(testUser))
-          .send(correctPostBody)
+          .then(() => {
+            return supertest(app)
+              .post(`/api/language/guess`)
+              .set('Authorization', helpers.makeAuthHeader(testUser))
+              .send(correctPostBody)
+          })
 
         correctPostBody = {
           guess: testLanguagesWords[1].translation,
