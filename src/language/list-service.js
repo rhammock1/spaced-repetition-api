@@ -1,4 +1,3 @@
-const List = require('./linked-list');
 
 const merge = function(left, right, arr) {
   let leftIndex = 0;
@@ -39,17 +38,16 @@ const mergeSort = function(arr) {
 // This function creates a new list and sorts it by incorrect count
 // It will be called in the language services file and used to create
 //  a new list each time the client makes a request to get all words.
-const newList = function(arr) {
-  const words = new List();
+const sort = function(arr, List) {
   let length = arr.length;
   let filter = arr.filter((each) => each.incorrect_count === 0)
   if (filter.length === length) {
-    arr.forEach((word) => words.insertLast(word));
-    return words;
+    arr.forEach((word) => List.insertLast(word));
+    return List;
   } else {
     const sorted = mergeSort(arr);
-    sorted.forEach((word) => words.insertLast(word));
-    return words;
+    sorted.forEach((word) => List.insertLast(word));
+    return List;
   }
   
 }
@@ -57,14 +55,19 @@ const newList = function(arr) {
 const addToIncorrect = function(List, value) {
   const node = List.find(value);
   node.value.incorrect_count++;
+  List.remove(value);
+  List.insertMiddle(value);
   return node;
 }
 
 const addToCorrect = function(List, value) {
   const node = List.find(value);
   node.value.correct_count++;
+  List.remove(value);
+  List.insertLast(value);
   return node;
 }
 
-module.exports = { newList, addToCorrect, addToIncorrect};
+
+module.exports = { sort, addToCorrect, addToIncorrect};
 

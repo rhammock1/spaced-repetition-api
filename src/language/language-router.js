@@ -25,7 +25,9 @@ languageRouter
       next(error)
     }
   })
-  .use(async (req, res, next) => {
+
+languageRouter
+  .get('/', async (req, res, next) => {
     try {
       const words = await LanguageService.getLanguageWords(
         req.app.get('db'),
@@ -36,21 +38,9 @@ languageRouter
         return res.status(404).json({
           error: `There aren\'t any words`,
         })
-      const head = words.head;
-      req.words = words;
-      req.head = head;
-      next()
-    } catch (error) {
-      next(error)
-    }
-  })
-
-languageRouter
-  .get('/', async (req, res, next) => {
-    try {
       res.json({
         language: req.language,
-        words: req.words.display(),
+        words: words.display(),
       })
       next()
     } catch (error) {
@@ -62,17 +52,16 @@ languageRouter
   .get('/head', async (req, res, next) => {
     // my guess is that this head endpoint will be the one responsible for getting me the first card every time. Getting the "head" of the linked list
     try {
-      const words = req.words.display();
-      const first = req.head;
+      const first = LanguageService.getHead();
 
       if (!first) {
         return res.status(404).json({
           error: 'No item on top',
         })
       }
-      let total = 0;
+      
       console.log('Line 74', first);
-      words.map((word) => total += word.correct_count);
+      const total = LanguageService.getTotalScore();
       const head = {
         nextWord:first.value.original,
         totalScore:total,
@@ -98,8 +87,8 @@ languageRouter
 
     try {
       const { guess } = req.body;
-      const words = req.words;
-      const head = req.head.value;
+      const head = LanguageService.getHead();
+      console.log('line 91', head);
       const db = req.app.get('db');
       let updatedNode;
       let updatedField;
@@ -108,18 +97,20 @@ languageRouter
       if (!guess) {
         return res.status(400).json({ error: 'Must include user guess in request body'});
       }
-      if (guess.toLowerCase() === head.translation.toLowerCase()) {
-        updatedNode = await ListService.addToCorrect(words, head);
+      // Decides if they got the right answer or not and prepares the response
+      if (guess.toLowerCase() === head.value.translation.toLowerCase()) {
+        updatedNode = await LanguageService.addToCorrect(head.value);
         updatedField = { correct_count: updatedNode.value.correct_count };
         message = 'You got the right answer';
         
       } else {
-        updatedNode = await ListService.addToIncorrect(words, head);
+        updatedNode = await LanguageService.addToIncorrect(head.value);
         updatedField = { incorrect_count: updatedNode.value.incorrect_count };
         message = 'You did not get the right answer';
 
       }
-      await LanguageService.updateCountOnWord(db, head.id, updatedField)
+      // Takes the updated fields and inputs it into the db then sends the response
+      await LanguageService.updateCountOnWord(db, head.value.id, updatedField)
           .then(() => res.status(201).json({ message }))
           .catch((error) => next(error));
     } catch (error) {

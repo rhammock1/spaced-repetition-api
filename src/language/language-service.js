@@ -1,4 +1,7 @@
 const ListService = require('./list-service');
+const List = require('./linked-list');
+
+const words = new List();
 
 const LanguageService = {
   getUsersLanguage(db, user_id) {
@@ -15,6 +18,26 @@ const LanguageService = {
       .first()
   },
 
+  getHead() {
+    console.log(words);
+    return words.head;
+  },
+
+  addToCorrect(value) {
+    return ListService.addToCorrect(words, value);
+  },
+  addToIncorrect(value) {
+    console.log(words);
+    return ListService.addToIncorrect(words, value);
+  },
+
+  getTotalScore() {
+  let total = 0;
+  const List = words.display()
+  List.map((word) => total += word.correct_count);
+  return total;
+},
+
   getLanguageWords(db, language_id) {
     return db
       .from('word')
@@ -30,9 +53,9 @@ const LanguageService = {
       )
       .where({ language_id })
       .then((lang) => {
-       const words = ListService.newList(lang);
-       return words;
+        return ListService.sort(lang, words)
       })
+      
   },
 
   updateCountOnWord(db, id, newField) {
