@@ -92,7 +92,6 @@ languageRouter
       let updatedNode;
       let updatedField;
       let isCorrect;
-
       if (!guess) {
         return res.status(400).json({ error: `Missing 'guess' in request body`});
       }

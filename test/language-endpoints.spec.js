@@ -221,10 +221,11 @@ describe.only('Language Endpoints', function () {
     })
 
     context(`Given correct guess`, () => {
+      
       const testLanguagesWords = testWords.filter(
         word => word.language_id === testLanguage.id
       )
-
+      
       it(`responds with correct and moves head`, () => {
         const correctPostBody = {
           guess: testLanguagesWords[0].translation,
@@ -249,9 +250,9 @@ describe.only('Language Endpoints', function () {
           })
       })
 
-      it.only(`moves the word 2 spaces, increases score and correct count`, async () => {
+      it(`moves the word 2 spaces, increases score and correct count`, async () => {
         let correctPostBody = {
-          guess: testLanguagesWords[0].translation,
+          guess: testLanguagesWords[1].translation,
         }
         await supertest(app)
           .get('/api/language')
@@ -264,36 +265,47 @@ describe.only('Language Endpoints', function () {
           })
 
         correctPostBody = {
-          guess: testLanguagesWords[1].translation,
-        }
-        await supertest(app)
-          .post(`/api/language/guess`)
-          .set('Authorization', helpers.makeAuthHeader(testUser))
-          .send(correctPostBody)
-          .expect({
-            nextWord: testLanguagesWords[2].original,
-            totalScore: 2,
-            wordCorrectCount: 0,
-            wordIncorrectCount: 0,
-            answer: testLanguagesWords[1].translation,
-            isCorrect: true
-          })
-
-        correctPostBody = {
           guess: testLanguagesWords[2].translation,
         }
         await supertest(app)
-          .post(`/api/language/guess`)
-          .set('Authorization', helpers.makeAuthHeader(testUser))
-          .send(correctPostBody)
-          .expect({
-            nextWord: testLanguagesWords[0].original,
-            totalScore: 3,
-            wordCorrectCount: 1,
-            wordIncorrectCount: 0,
-            answer: testLanguagesWords[2].translation,
-            isCorrect: true
-          })
+          // .get('/api/language')
+          // .set('Authorization', helpers.makeAuthHeader(testUser))
+          // .then(() => {
+            // return supertest(app)
+              .post(`/api/language/guess`)
+              .set('Authorization', helpers.makeAuthHeader(testUser))
+              .send(correctPostBody)
+              .expect({
+                nextWord: testLanguagesWords[3].original,
+                totalScore: 3,
+                wordCorrectCount: 0,
+                wordIncorrectCount: 0,
+                answer: testLanguagesWords[2].translation,
+                isCorrect: true
+              })
+          // })
+          
+        correctPostBody = {
+          guess: testLanguagesWords[3].translation,
+        }
+        await supertest(app)
+          // .get('/api/language')
+          // .set('Authorization', helpers.makeAuthHeader(testUser))
+          // .then(() => {
+          //   return supertest(app)
+              .post(`/api/language/guess`)
+              .set('Authorization', helpers.makeAuthHeader(testUser))
+              .send(correctPostBody)
+              .expect({
+                nextWord: testLanguagesWords[4].original,
+                totalScore: 4,
+                wordCorrectCount: 0,
+                wordIncorrectCount: 0,
+                answer: testLanguagesWords[3].translation,
+                isCorrect: true
+              })
+          // })
+          
       })
     })
   })
