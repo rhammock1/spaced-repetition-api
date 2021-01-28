@@ -31,7 +31,7 @@ const LanguageService = {
 
   getTotalScore() {
   let total = 0;
-  const List = words.display()
+  const List = words.display();
   List.map((word) => total += word.correct_count);
   return total;
 },
@@ -52,7 +52,6 @@ const LanguageService = {
       .where({ language_id })
       .then((lang) => {
         if (words.head === null) {
-          console.log('blank list');
           return ListService.sort(lang, words);
         } else {
           return words;

@@ -224,7 +224,6 @@ describe.only('Language Endpoints', function () {
       const testLanguagesWords = testWords.filter(
         word => word.language_id === testLanguage.id
       )
-      console.log(testLanguagesWords);
 
       it(`responds with correct and moves head`, () => {
         const correctPostBody = {
