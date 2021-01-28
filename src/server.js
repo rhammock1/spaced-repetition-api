@@ -11,7 +11,8 @@ const db = knex({
   "port": process.env.DATABASE_PORT,
   "database": process.env.DATABASE_NAME,
   "username": process.env.DATABASE_USER,
-  "password": process.env.DATABASE_PASS
+  "password": process.env.DATABASE_PASS,
+  ssl: true,
 })
 
 app.set('db', db)
