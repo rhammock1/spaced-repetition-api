@@ -1,5 +1,73 @@
 # Spaced repetition API!
 
+## Thinkful Capstone project practicing Linked Lists
+
+This app helps the user learn a new language through the learning technique of spaced repetition. When the user gets translates the word correctly, the word moves further back in line so they're tested less often on it. When they get the answer wrong, the word only moves back a few spaces so the user is tested more frequently on the word.
+
+### Endpoints
+/api/language  GET
+   Sample Response: 200 ok
+   ```
+      {
+    "language": {
+        "id": 1,
+        "name": "Spanish",
+        "user_id": 1,
+        "head": 1,
+        "total_score": 0
+    },
+    "words": [
+        {
+            "id": 6,
+            "language_id": 1,
+            "original": "Seis",
+            "next": 7,
+            "translation": "Six",
+            "memory_value": 1,
+            "correct_count": 0,
+            "incorrect_count": 0
+        },
+        {
+            "id": 4,
+            "language_id": 1,
+            "original": "Cuatro",
+            "next": 5,
+            "translation": "Four",
+            "memory_value": 1,
+            "correct_count": 0,
+            "incorrect_count": 1
+        },
+        ...]
+
+   ```
+/api/language/head   GET
+   Sample Response: 200 ok
+   ```
+   {
+      "nextWord": "Seis",
+      "totalScore": 4,
+      "wordCorrectCount": 0,
+      "wordIncorrectCount": 0
+   }
+   ```
+/api/language/guess  POST
+   Sample Request:
+   ```
+   {
+    "guess": "ten"
+   }
+   ```
+   Sample Response: 200 ok
+   ```
+   {
+    "nextWord": "Cuatro",
+    "totalScore": 5,
+    "wordCorrectCount": 0,
+    "wordIncorrectCount": 1,
+    "answer": "ten",
+    "isCorrect": false
+}
+   ```
 ## Local dev setup
 
 If using user `dunder-mifflin`:
