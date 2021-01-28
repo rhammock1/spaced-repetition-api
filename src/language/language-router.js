@@ -1,9 +1,8 @@
-const express = require('express')
-const LanguageService = require('./language-service')
-const ListService = require('./list-service');
+const express = require('express');
+const LanguageService = require('./language-service');
 const { requireAuth } = require('../middleware/jwt-auth')
 const jsonParser = express.json();
-const languageRouter = express.Router()
+const languageRouter = express.Router();
 
 languageRouter
   .use(requireAuth)
@@ -50,7 +49,6 @@ languageRouter
 
 languageRouter
   .get('/head', async (req, res, next) => {
-    // my guess is that this head endpoint will be the one responsible for getting me the first card every time. Getting the "head" of the linked list
     try {
       const first = LanguageService.getHead();
 
@@ -79,11 +77,6 @@ languageRouter
 
 languageRouter
   .post('/guess', jsonParser, async (req, res, next) => {
-    // This will take a users guess from the request body and decide whether it matches the head of the linked list or not. Then send an appropriate response 
-
-    // If they get the right answer than the correct field needs to be updated and the word should be moved to the end of the list. 
-    // If they get the WRONG answer than the incorrect fields needs to be updated and the word should be moved into the middle of the list. 
-
     try {
       const { guess } = req.body;
       const head = LanguageService.getHead();

@@ -268,10 +268,6 @@ describe.only('Language Endpoints', function () {
           guess: testLanguagesWords[2].translation,
         }
         await supertest(app)
-          // .get('/api/language')
-          // .set('Authorization', helpers.makeAuthHeader(testUser))
-          // .then(() => {
-            // return supertest(app)
               .post(`/api/language/guess`)
               .set('Authorization', helpers.makeAuthHeader(testUser))
               .send(correctPostBody)
@@ -283,16 +279,11 @@ describe.only('Language Endpoints', function () {
                 answer: testLanguagesWords[2].translation,
                 isCorrect: true
               })
-          // })
           
         correctPostBody = {
           guess: testLanguagesWords[3].translation,
         }
         await supertest(app)
-          // .get('/api/language')
-          // .set('Authorization', helpers.makeAuthHeader(testUser))
-          // .then(() => {
-          //   return supertest(app)
               .post(`/api/language/guess`)
               .set('Authorization', helpers.makeAuthHeader(testUser))
               .send(correctPostBody)
@@ -304,7 +295,6 @@ describe.only('Language Endpoints', function () {
                 answer: testLanguagesWords[3].translation,
                 isCorrect: true
               })
-          // })
           
       })
     })
